@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ -z "$AZK_UID" ]; then
+  exec azk shell -c "${BASH_SOURCE:-$0}$([ -z "$@" ] || printf ' %q' "$@")"
+fi
+
+ln -s /azk/mydocs_php/php-web /var/www/manual/pt_BR
+rm /etc/nginx/sites-available/default
+ln -s `pwd`/nginx-site.conf /etc/nginx/sites-available/default
+service php5-fpm start && nginx

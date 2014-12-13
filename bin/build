@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ -z "$AZK_UID" ]; then
+  exec azk shell -c "${BASH_SOURCE:-$0}$([ -z "$@" ] || printf ' %q' "$@")"
+fi
+
+cd doc-pt_BR
+php doc-base/configure.php --enable-xml-details --with-lang=pt_BR
+phd --docbook doc-base/.manual.xml --package PHP --format php --output /azk/mydocs_php

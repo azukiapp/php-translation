@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if [ -z "$AZK_UID" ]; then
+  exec azk shell -c "${BASH_SOURCE:-$0}$([ -z "$@" ] || printf ' %q' "$@")"
+fi
+
+exec svn "$@";

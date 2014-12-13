@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Get azk root path
+abs_dir() {
+  cd "${1%/*}"; link=`readlink ${1##*/}`;
+  if [ -z "$link" ]; then pwd; else abs_dir $link; fi
+}
+root_path=`cd \`abs_dir ${BASH_SOURCE:-$0}\`; pwd`
+
+if [ -z "$AZK_UID" ]; then
+  exec azk shell -c "${BASH_SOURCE:-$0}$([ -z "$@" ] || printf ' %q' "$@")"
+fi
+
+# clone or update repo
+if [ ! -d doc-pt_BR ]; then
+  svn co https://svn.php.net/repository/phpdoc/modules/doc-pt_BR
+else
+  cd doc-pt_BR && svn update
+fi
+
+# Config and initial build
+$root_path/build
